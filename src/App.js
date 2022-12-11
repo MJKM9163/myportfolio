@@ -1,9 +1,12 @@
 import React from "react";
+import CanvasIndex from "./canvas/Index";
+import HandCard from "./components/handCard/HandCard";
 
 function App() {
   return (
-    <div className="App">
-      <div>준비 완료</div>
+    <div className="view">
+      <HandCard />
+      <CanvasIndex />
     </div>
   );
 }
