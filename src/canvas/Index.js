@@ -1,15 +1,17 @@
 import { Canvas } from "@react-three/fiber";
 import React from "react";
-import Camera from "./camera/Camera";
+import Player from "./player/Player";
+import Camera from "./setting/Camera";
+import Light from "./setting/Light";
+import TableGroup from "./table/TableGroup";
 
 const CanvasIndex = () => {
   return (
     <Canvas>
       <Camera />
-      <mesh>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshNormalMaterial />
-      </mesh>
+      <Light />
+      <Player />
+      <TableGroup />
     </Canvas>
   );
 };
