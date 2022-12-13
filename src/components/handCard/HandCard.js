@@ -40,7 +40,9 @@ const HandCard = () => {
       <div className="cardList">
         {/* map으로 카드 리스트 보기 */}
         {testArr.map((card, index) => (
-          <div className="card">{card}</div>
+          <div className="card" key={`card_${index}`}>
+            {card}
+          </div>
         ))}
       </div>
     </HandCardBox>

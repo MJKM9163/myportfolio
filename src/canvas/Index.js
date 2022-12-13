@@ -1,4 +1,5 @@
 import { Canvas } from "@react-three/fiber";
+import { Debug, Physics } from "@react-three/rapier";
 import React from "react";
 import Player from "./player/Player";
 import Camera from "./setting/Camera";
@@ -10,8 +11,11 @@ const CanvasIndex = () => {
     <Canvas>
       <Camera />
       <Light />
-      <Player />
-      <TableGroup />
+      <Physics>
+        <Debug />
+        <Player />
+        <TableGroup />
+      </Physics>
     </Canvas>
   );
 };

@@ -11,7 +11,7 @@ export function CardDeck(props) {
           <group
             rotation={[-Math.PI, 0, -Math.PI]}
             scale={[1.12, 1, 0.49]}
-            position={[0, 0, 1]}
+            position={[0, 0, 0]}
           >
             <mesh
               geometry={nodes["Ace_of_Clubs_01_-_Default_0"].geometry}

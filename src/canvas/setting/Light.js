@@ -4,7 +4,6 @@ import { Lamp } from "../../models/Lamp";
 
 const Light = () => {
   const slRef = useRef();
-  console.log(slRef);
 
   useEffect(() => {
     if (slRef.current) {
