@@ -7,6 +7,7 @@ function App() {
     <div className="view">
       <HandCard />
       <CanvasIndex />
+      <div>test</div>
     </div>
   );
 }
