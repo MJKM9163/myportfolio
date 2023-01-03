@@ -1,5 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
+import puzzleState from "./puzzleReducer/puzzleState";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    puzzleState: puzzleState,
+  },
 });
