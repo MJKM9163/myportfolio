@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import { create } from "ipfs-http-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const NftBox = styled.div`
   position: relative;
@@ -89,7 +91,9 @@ const NftBox = styled.div`
           }
         }
         .attInput {
-          margin-bottom: 10px;
+          div {
+            margin-bottom: 5px;
+          }
         }
       }
     }
@@ -99,29 +103,48 @@ const NftBox = styled.div`
 const Nft = () => {
   const attRef = useRef();
   const [fileData, setFileData] = useState();
-  const [metaData, setMetaData] = useState({
-    nftName: null,
-    nftDesc: null,
-    nftAtt: [
-      {
-        type: null,
-        value: null,
-      },
-    ],
+  const [nftInfo, setNftInfo] = useState({
+    nftName: "",
+    nftDesc: "",
   });
+  const [nftAtt, setNftAtt] = useState([
+    {
+      type: "",
+      value: "",
+    },
+  ]);
 
   function addAttribute() {
-    const attNode = document.createElement("div");
-    const typeInput = document.createElement("input");
-    const valueInput = document.createElement("input");
-    typeInput.placeholder = "type";
-    valueInput.placeholder = "value";
-    attNode.className = "attInput";
-    attNode.appendChild(typeInput);
-    attNode.appendChild(valueInput);
-    attRef.current.appendChild(attNode);
-    console.log(attNode);
+    setNftAtt([
+      ...nftAtt,
+      {
+        type: "",
+        value: "",
+      },
+    ]);
   }
+
+  // 인트라 테스트
+  const projectId = process.env.REACT_APP_projectId;
+  const projectSecret = process.env.REACT_APP_projectSecret;
+
+  const auth =
+    "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
+
+  const ipfs = create({
+    host: "ipfs.infura.io",
+    port: 5001,
+    protocol: "https",
+    headers: {
+      authorization: auth,
+    },
+  });
+
+  async function testFunc() {
+    const imgUrl = await ipfs.add(fileData.imgData);
+    console.log(imgUrl);
+  }
+
   return (
     <NftBox>
       <div className="nftCreateBox">
@@ -164,32 +187,62 @@ const Nft = () => {
         <div className="inputBox">
           <div className="inputName inputs">
             <div className="inputTitle">NFT이름</div>
-            <input />
+            <input
+              value={nftInfo.nftName}
+              onChange={(e) => {
+                setNftInfo({ ...nftInfo, nftName: e.target.value });
+              }}
+            />
           </div>
           <div className="inputDesc inputs">
             <div className="inputTitle">설명</div>
-            <textarea />
+            <textarea
+              onChange={(e) =>
+                setNftInfo({ ...nftInfo, nftDesc: e.target.value })
+              }
+            />
           </div>
           <div className="inputAttri inputs">
             <div className="inputTitle">속성</div>
             <div className="attAdd" onClick={() => addAttribute()}>
               <FontAwesomeIcon icon="fa-solid fa-add" />
             </div>
-            <form
-              className="attBox"
-              onSubmit={(e) => {
-                e.preventDefault();
-                console.log(e);
-              }}
-            >
+            <div className="attBox">
               <div ref={attRef}>
                 <div className="attInput">
-                  <input placeholder="type" />
-                  <input placeholder="value" />
+                  {nftAtt.map((data, index) => (
+                    <div key={index}>
+                      <input
+                        placeholder="type"
+                        value={data.type}
+                        onChange={(e) => {
+                          let arr = nftAtt;
+                          arr[index] = {
+                            type: e.target.value,
+                            value: nftAtt[index].value,
+                          };
+                          setNftAtt([...arr]);
+                        }}
+                      />
+                      <input
+                        placeholder="value"
+                        value={data.value}
+                        onChange={(e) => {
+                          let arr = nftAtt;
+                          arr[index] = {
+                            type: nftAtt[index].type,
+                            value: e.target.value,
+                          };
+                          setNftAtt([...arr]);
+                        }}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
-              <button>테스트</button>
-            </form>
+              <button>NFT 생성!</button>
+              <button onClick={() => testFunc()}>테스트 버튼!</button>
+            </div>
           </div>
         </div>
       </div>
