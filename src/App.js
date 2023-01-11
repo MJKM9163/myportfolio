@@ -1,4 +1,5 @@
 import React from "react";
+import "@fortawesome/fontawesome-free/js/all.js";
 import Nft from "./nft/Nft";
 import Puzzle from "./puzzle/Puzzle";
 
